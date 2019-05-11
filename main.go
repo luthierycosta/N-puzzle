@@ -2,14 +2,13 @@ package main
 
 import (
 	// "fmt"
-	. "./graph"
+	. "github.com/luthierycosta/N-puzzle/graph"
 )
 
 func main() {
-	x := Vertex{Value: 2}
-	vertArr := []Vertex{x, x}
-	gra := Graph{vertArr}
-
+	//x := NewVertex(2)
+	//y := NewVertex(1)
+	gra := NewGraph(2,1,2)
 	gra.ShowVerts()
 
 	// fmt.Println(gra)
