@@ -1,5 +1,9 @@
 package pq
 
+import (
+    "fmt"
+)
+
 // No futuro substituiremos Item pela struct State importada de fora
 type Item struct {
 	F float64
@@ -30,7 +34,9 @@ func (pq *PriorityQueue) Push(values ...Item) {
 // Retira o elemento com maior prioridade na fila
 func (pq *PriorityQueue) Pop() (result Item) {
     if pq.Len() == 0 {
-        result = Item{}                 // não tem como retornar nil
+        // Não há erro em não atribuir valor ao retorno
+        // afinal ele já foi inicializado acima com seu valor nulo
+        fmt.Println("Erro: pilha vazia")
     } else {
         result = (*pq)[0]
         *pq = (*pq)[1:]
