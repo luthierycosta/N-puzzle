@@ -1,4 +1,4 @@
-package estado
+package state
 
 type Pair struct {
 	X int
