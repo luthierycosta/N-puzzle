@@ -1,5 +1,9 @@
 package state
 
+import (
+	"math/rand"
+)
+
 type Pair struct {
 	X int
 	Y int
@@ -10,7 +14,7 @@ type State struct {
 	pos0      Pair
 }
 
-func NewStateFinal(n int) State {
+func NewState(n int) State {
 	state := State{}
 	state.gameBoard = make([][]int, n)
 	for i := 0; i < n; i++ {
@@ -27,6 +31,18 @@ func NewStateFinal(n int) State {
 	return state
 }
 
-func (*State) getParity() int {
-	return 0
+func (s *State) shuffle(seed int64) {
+	r := rand.New(rand.NewSource(seed))	// create new random source
+	bSize := len(s.gameBoard)						// get board size
+	perm := r.Perm(bSize * bSize)				// get random permutarion of size n^2
+
+	// TODO:
+	// cheque aqui que a paridade da permutacao eh segura
+
+	// replace all blocks with the random ones from the permutation
+	for i, randIndex := range perm {
+		row := i / bSize
+		col := i % bSize
+		s.gameBoard[row][col] = randIndex
+	}
 }
