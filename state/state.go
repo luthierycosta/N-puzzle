@@ -26,3 +26,7 @@ func NewStateFinal(n int) State {
 
 	return state
 }
+
+func (*State) getParity() int {
+	return 0
+}
