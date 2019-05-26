@@ -5,51 +5,50 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// sem usar a bliblioteca de asser
+func setup() (result PriorityQueue) {
+	result = PriorityQueue{}
+	result.compare = func (a, b Item) bool {
+		return a.compare(&b);
+	};
+	return;
+}
+
 func TestPush(t *testing.T) {
-	fila := PriorityQueue{}
-	item := Item{2.4}
-	fila.Push(item)
-	if fila.Len() != 1 {
-		t.Errorf("Deu erro no pq.Push()")
+	queue := setup();
+	item := Item{2.4};
+	queue.push(item);
+	assert.Equal(t, queue.len(), 1, "O número de elementos na fila deve ser 1");
+}
+
+func TestTopEmpty(t *testing.T) {
+	queue := setup();
+	_, errorHandle := queue.top();
+	assert.EqualErrorf(t, errorHandle, "Pilha vázia", "Deve retornar uma mensagem de erro %s ao tentar desempilhar de uma fila vázia!", "Pilha vázia");
+}
+
+func TestTop(t *testing.T) {
+	queue := setup();
+	item := Item{2.4};
+	queue.push(item);
+	top, errorHandle := queue.top();
+	assert.Equal(t, top, item, "O top deve retornar o elemento empilhado!");
+	assert.Equal(t, errorHandle, nil, "Nenhum erro deve ser retornado!");
+}
+
+func TestTopMultiple(t *testing.T) {
+	queue := setup();
+	items := []Item{Item{2.4}, Item{3.4}, Item{0.1}, Item{6.4}, Item{7.4}, Item{10.4}};
+	order := []int{2, 0, 1, 3, 4, 5};
+	queue.push(items...);
+	assert.Equal(t, queue.len(), len(items), "O número de elementos na fila deve ser %d", len(items));
+
+	for i := 0; i < len(items); i++ {
+		top, errorHandle := queue.top();
+		assert.Equal(t, errorHandle, nil, "Nenhum erro deve ser retornado ao recuperar o %dº elemento!", i);
+		assert.Equal(t, top, items[order[i]], "O %dº elemento da fila deve ser Item{%d}", i, items[order[i]]);
+		errorHandle = queue.pop();
+		assert.Equal(t, errorHandle, nil, "Nenhum erro deve ser retornado ao remover o %dº elemento!", i);
 	}
-}
-
-// usando a biblioteca de assert
-func TestPushMultiplos(t *testing.T) {
-	assert := assert.New(t)
-
-	fila := PriorityQueue{}
-	fila.Push(Item{2.5})
-	fila.Push(Item{2.6})
-	fila.Push(Item{2.7})
-	fila.Push(Item{2.8})
-
-	assert.Equal(fila.Len(), 4)
-}
-
-func TestPop(t *testing.T) {
-	assert := assert.New(t)
-
-	fila := PriorityQueue{}
-	
-
-	fila.Push(Item{0.3},Item{0.2}, Item{0.45},Item{0.7}, Item{0.4})
-
-	a := fila.Pop()
-	b := fila.Pop()
-	fila.Push(Item{0.1}, Item{0.6})
-	c := fila.Pop()
-
-	assert.Equal(a, Item{0.2})
-	assert.Equal(b, Item{0.3})
-	assert.Equal(c, Item{0.1})
-}
-
-func TestPopOnEmpty(t *testing.T) {
-	assert := assert.New(t)
-
-	fila := PriorityQueue{}
-	
-	assert.Equal(fila.Pop(), Item{})
+	_, errorHandle := queue.top();
+	assert.EqualErrorf(t, errorHandle, "Pilha vázia", "A pilha deve estar vázia após desempilhar todos os elementos!");
 }
