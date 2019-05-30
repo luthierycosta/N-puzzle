@@ -63,8 +63,12 @@ func (s *State) shuffle(seed int64) {
 	bSize := len(s.gameBoard)						// get board size
 	perm := r.Perm(bSize * bSize)				// get random permutarion of size n^2
 
-	
-	// TODO: use isSolvable to re-shuffle when needed
+	// while isnt solvable, get new permutation
+	for !isSolvable(perm, bSize, s.pos0) {
+		newSeed := r.Int63()
+		r.Seed(newSeed)
+		perm = r.Perm(bSize * bSize)
+	}
 
 	// replace all blocks with the random ones from the permutation
 	for i, randIndex := range perm {
