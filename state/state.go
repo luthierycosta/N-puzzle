@@ -31,43 +31,44 @@ func NewState(n int) State {
 	return state
 }
 
-func isSolvable(perm []int, bSize int, pos0 Pair) bool {
+func isSolvable(perm []int, bSize int, row0 int) bool {
 	inversion := 0
-	bSize2 := bSize*bSize
+	bSize2 := bSize * bSize
 	for i := 0; i < bSize2; i++ { // calculando o numero de inversoes
-		for j:= i; j < bSize2; j++ {
+		for j := i; j < bSize2; j++ {
 			if perm[i] > perm[j] && perm[j] != 0 {
-				inversion++;
+				inversion++
 			}
 		}
 	}
-	
-	if (bSize % 2 == 1) {
-		if (inversion % 2 == 0) {
-			return true
-		}
-	} else {
-		if (pos0.Y % 2 == 0 && inversion % 2 == 1) {
-			return true
-		} else if (pos0.Y % 2 == 1 && inversion % 2 == 0) {
-			return true
-		}
-	}
 
-	return false
+	return (bSize%2 == 1 && inversion%2 == 0) || (row0%2+inversion%2 == 1)
+
 	// logic taken from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
 }
 
 func (s *State) shuffle(seed int64) {
-	r := rand.New(rand.NewSource(seed))	// create new random source
-	bSize := len(s.gameBoard)						// get board size
-	perm := r.Perm(bSize * bSize)				// get random permutarion of size n^2
+	r := rand.New(rand.NewSource(seed)) // create new random source
+	bSize := len(s.gameBoard)           // get board size
+	perm := r.Perm(bSize * bSize)       // get random permutarion of size n^2
+
+	row0 := -1
+	for i, val := range perm {
+		if val == 0 {
+			row0 = i
+		}
+	}
 
 	// while isnt solvable, get new permutation
-	for !isSolvable(perm, bSize, s.pos0) {
+	for !isSolvable(perm, bSize, row0) {
 		newSeed := r.Int63()
 		r.Seed(newSeed)
 		perm = r.Perm(bSize * bSize)
+		for i, val := range perm {
+			if val == 0 {
+				row0 = i
+			}
+		}
 	}
 
 	// replace all blocks with the random ones from the permutation
