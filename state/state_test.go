@@ -43,10 +43,10 @@ func TestIsSolvable(t *testing.T) {
 
 	invalid1 := []int{ 3, 9, 1, 15, 14, 11, 4, 6, 13, 0, 10, 12, 2, 7, 8, 5 }
 
-	assert.True(isSolvable(valid1, 3, Pair{0, 1}))
-	assert.True(isSolvable(valid2, 4, Pair{1, 2}))
-	assert.True(isSolvable(valid3, 4, Pair{3, 1}))
-	assert.False(isSolvable(invalid1, 4, Pair{1, 2}))
+	assert.True(isSolvable(valid1, 3, 1))
+	assert.True(isSolvable(valid2, 4, 2))
+	assert.True(isSolvable(valid3, 4, 1))
+	assert.False(isSolvable(invalid1, 4, 2))
 }
 
 func TestShuffle(t *testing.T) {
