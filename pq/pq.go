@@ -1,45 +1,92 @@
 package pq
 
-import (
-    "fmt"
-)
-
-// No futuro substituiremos Item pela struct State importada de fora
-type Item struct {
-	F float64
+type EmptyStackError struct {
+	msg string
 }
 
-func (i *Item) Priority() float64 {return i.F}
+func (e *EmptyStackError) Error() string {
+    return e.msg
+}
+// Struct Item, que depois será substituída pela struct State
+type Item struct {
+	value float64
+}
 
-// Fila de prioridade que ordena os itens de forma crescente (menor valor primeiro).
+// Fila de prioridade, implementada em uma heap armazenada em array.
 type PriorityQueue []Item
 
-// Retorna o tamanho atual da fila.
+// Função de comparação entre 2 itens usada para ordenar a fila de prioridade, ainda não definida.
+var compare func(Item,Item)bool
+
+// Aloca e retorna uma nova fila de prioridade, cuja função compare() é recebida de parâmetro.
+func New(customCompare func(Item,Item)bool) PriorityQueue {
+	pq := new(PriorityQueue)
+	compare = customCompare
+	return *pq
+}
+// Retorna a quantidade de elementos na fila.
 func (pq *PriorityQueue) Len() int {
     return len(*pq)
 }
 
-// Insere um elemento na fila de prioridade.
-func (pq *PriorityQueue) Push(values ...Item) {
-    for _, value := range values {
-        // insere-o no fim da fila
-        *pq = append(*pq, value)
-        // percorre a fila pra posicionar o elemento na ordem certa
-        for i := len(*pq)-1; i > 0 && value.Priority() < (*pq)[i-1].Priority(); i-- {
-            (*pq)[i-1], (*pq)[i] = (*pq)[i], (*pq)[i-1]
-        }
+// Insere uma quantidade qualquer de itens na fila.
+func (pq *PriorityQueue) Push(items ...Item) {
+    for _, obj := range items {
+		*pq = append((*pq), obj)
+
+		for i := pq.Len()-1;
+			i != 0 && !(compare((*pq)[pq.parent(i)], (*pq)[i]));
+			i = pq.parent(i) {
+			(*pq)[pq.parent(i)], (*pq)[i] = (*pq)[i], (*pq)[pq.parent(i)]
+		}
     }
 }
 
-// Retira o elemento com maior prioridade na fila
-func (pq *PriorityQueue) Pop() (result Item) {
-    if pq.Len() == 0 {
-        // Não há erro em não atribuir valor ao retorno
-        // afinal ele já foi inicializado acima com seu valor nulo
-        fmt.Println("Erro: pilha vazia")
-    } else {
-        result = (*pq)[0]
-        *pq = (*pq)[1:]
-    }
-    return
+// Retorna o valor de maior prioridade na fila.
+func (pq *PriorityQueue) Top() (result Item, errorHandle error) {
+	errorHandle = nil
+	if pq.Len() == 0 {
+		errorHandle = &EmptyStackError{"Pilha vazia"}
+	} else {
+		result = (*pq)[0]
+	}
+	return
+}
+
+// Retira o elemento de maior prioridade na fila.
+func (pq *PriorityQueue) Pop() (errorHandle error) {
+	_, errorHandle = pq.Top()
+	if errorHandle != nil { return }
+
+	(*pq)[0], (*pq)[pq.Len()-1] = (*pq)[pq.Len()-1], (*pq)[0]
+	*pq = (*pq)[:pq.Len()-1]
+	pq.fixHeapQueue(0)
+	return
+}
+
+func (pq *PriorityQueue) parent(i int) int {
+	return (i-1)/2
+}
+
+func (pq *PriorityQueue) left(i int) int {
+	return 2*i+1
+}
+
+func (pq *PriorityQueue) right(i int) int {
+	return 2*i+2
+}
+
+func (pq *PriorityQueue) fixHeapQueue(i int) {
+	l, r := pq.left(i), pq.right(i)
+	small := i
+	if l < pq.Len() && compare((*pq)[l], (*pq)[i]) {
+		small = l		
+	}
+	if r < pq.Len() && compare((*pq)[r], (*pq)[small]) {
+		small = r
+	}
+	if small != i {
+		(*pq)[i], (*pq)[small] = (*pq)[small], (*pq)[i]
+		pq.fixHeapQueue(small)
+	}
 }
