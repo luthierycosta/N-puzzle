@@ -5,6 +5,23 @@ import (
 	"testing"
 )
 
+func TestNewState(t *testing.T) {
+	assert := assert.New(t)
+
+	size := 6
+	state := NewState(size)
+
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
+			if (i == size-1 && j == size-1) {
+				assert.Equal(state.gameBoard[i][j], 0)
+			} else {
+				assert.Equal(state.gameBoard[i][j], i * size + j + 1)
+			}
+		}
+	}
+}
+
 // testa se pos0 é mesmo a posição do 0 no estado final
 func TestPos0Final(t *testing.T) {
 	assert := assert.New(t)
