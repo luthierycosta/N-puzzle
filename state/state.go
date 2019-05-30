@@ -31,13 +31,40 @@ func NewState(n int) State {
 	return state
 }
 
+func isSolvable(perm []int, bSize int, pos0 Pair) bool {
+	inversion := 0
+	bSize2 := bSize*bSize
+	for i := 0; i < bSize2; i++ { // calculando o numero de inversoes
+		for j:= i; j < bSize2; j++ {
+			if perm[i] > perm[j] && perm[j] != 0 {
+				inversion++;
+			}
+		}
+	}
+	
+	if (bSize % 2 == 1) {
+		if (inversion % 2 == 0) {
+			return true
+		}
+	} else {
+		if (pos0.Y % 2 == 0 && inversion % 2 == 1) {
+			return true
+		} else if (pos0.Y % 2 == 1 && inversion % 2 == 0) {
+			return true
+		}
+	}
+
+	return false
+	// logic taken from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
+}
+
 func (s *State) shuffle(seed int64) {
 	r := rand.New(rand.NewSource(seed))	// create new random source
 	bSize := len(s.gameBoard)						// get board size
 	perm := r.Perm(bSize * bSize)				// get random permutarion of size n^2
 
-	// TODO:
-	// cheque aqui que a paridade da permutacao eh segura
+	
+	// TODO: use isSolvable to re-shuffle when needed
 
 	// replace all blocks with the random ones from the permutation
 	for i, randIndex := range perm {
