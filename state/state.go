@@ -78,3 +78,15 @@ func (s *State) shuffle(seed int64) {
 		s.gameBoard[row][col] = randIndex
 	}
 }
+
+func (s State) makeCopy() State {
+	copy := State{[][]int{}, s.pos0}
+	for _, arr := range s.gameBoard {
+		line := []int{}
+		for _, val := range arr {
+			line = append(line, val)
+		}
+		copy.gameBoard = append(copy.gameBoard, line)
+	}
+	return copy
+}
