@@ -4,11 +4,11 @@ import (
 	"math/rand"
 )
 
-type Pair struct {
-	X int
-	Y int
-}
+// Pair representa uma casa (x,y) no tabuleiro do jogo.
+type Pair struct {X, Y int}
 
+// State representa um determinado estado no tabuleiro,
+// com os valores das peças na matriz gameBoard e a posição atual do 0 (espaço vazio) armazenada.
 type State struct {
 	gameBoard [][]int
 	pos0      Pair
