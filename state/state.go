@@ -1,9 +1,6 @@
 package state
 
-import (
-	"math/rand"
-	"time"
-)
+import "time"
 
 // Pair representa uma casa (x,y) no tabuleiro do jogo.
 type Pair struct {X, Y int}
@@ -43,54 +40,18 @@ func NewRandom(n int) State {
 	return state
 }
 
-func isSolvable(perm []int, bSize int, row0 int) bool {
-	inversion := 0
-	bSize2 := bSize * bSize
-	for i := 0; i < bSize2; i++ { // calculando o numero de inversoes
-		for j := i; j < bSize2; j++ {
-			if perm[i] > perm[j] && perm[j] != 0 {
-				inversion++
-			}
-		}
-	}
-
-	return (bSize%2 == 1 && inversion%2 == 0) || (row0%2+inversion%2 == 1)
-
-	// logic taken from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
-}
-
-func (s *State) shuffle(seed int64) {
-	r := rand.New(rand.NewSource(seed)) // create new random source
-	bSize := len(s.gameBoard)           // get board size
-	perm := r.Perm(bSize * bSize)       // get random permutarion of size n^2
-
-	row0 := -1
-	for i, val := range perm {
-		if val == 0 {
-			row0 = i
-		}
-	}
-
-	// while isnt solvable, get new permutation
-	for !isSolvable(perm, bSize, row0) {
-		newSeed := r.Int63()
-		r.Seed(newSeed)
-		perm = r.Perm(bSize * bSize)
-		for i, val := range perm {
-			if val == 0 {
-				row0 = i
-			}
-		}
-	}
-
-	// replace all blocks with the random ones from the permutation
-	for i, randIndex := range perm {
-		row := i / bSize
-		col := i % bSize
-		s.gameBoard[row][col] = randIndex
-	}
-}
-
 func (s State) makeCopy() State {
 	return New(s.gameBoard)
+}
+
+// Encontra a posição (x,y) do bloco k no tabuleiro do estado a.
+func (a State) findPos(k int) Pair {
+    for i := range a.gameBoard {
+        for j := range a.gameBoard[i] {
+            if a.gameBoard[i][j] == k {
+                return Pair{j, i}
+            }
+        }
+    }
+    return Pair{-1,-1}      // alguma exceção que eu não sei implementar
 }

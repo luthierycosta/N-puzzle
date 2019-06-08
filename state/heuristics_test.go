@@ -8,20 +8,16 @@ import (
 func TestDistanceTo(t *testing.T) {
 	assert := assert.New(t)
 
-	s1 := State{
-		gameBoard: [][]int{
-			{2, 8, 3},
-			{1, 6, 4},
-			{7, 0, 5},
-		},
-	}
-	s2 := State{
-		gameBoard: [][]int{
-			{1, 2, 3},
-			{8, 0, 4},
-			{7, 6, 5},
-		},
-	}
+	s1 := New([][]int{
+		{2, 8, 3},
+		{1, 6, 4},
+		{7, 0, 5},
+	})
+	s2 := New([][]int{
+		{1, 2, 3},
+		{8, 0, 4},
+		{7, 6, 5},
+	})
 	s3 := s1.makeCopy()
 
 	assert.Equal(s1.DistanceTo(s3), 0, "Se os estados são iguais, a distância tem que ser 0")
