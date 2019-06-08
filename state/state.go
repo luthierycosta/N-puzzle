@@ -2,6 +2,7 @@ package state
 
 import (
 	"math/rand"
+	"time"
 )
 
 // Pair representa uma casa (x,y) no tabuleiro do jogo.
@@ -14,20 +15,31 @@ type State struct {
 	pos0      Pair
 }
 
-func NewState(n int) State {
+// New State aloca e retorna um novo estado, cujo tabuleiro é recebido de argumento.
+func New(board [][]int) State {
 	state := State{}
+	n := len(board)
 	state.gameBoard = make([][]int, n)
 	for i := 0; i < n; i++ {
 		state.gameBoard[i] = make([]int, n)
 		for j := 0; j < n; j++ {
-			state.gameBoard[i][j] = i*n + j + 1
-			if j == n-1 && i == n-1 {
-				state.gameBoard[i][j] = 0
-			}
+			state.gameBoard[i][j] = board[i][j]
 		}
 	}
-	state.pos0 = Pair{n - 1, n - 1}
+	state.pos0 = state.findPos(0)
+	return state
+}
 
+// NewRandom aloca e retorna um novo estado de tabuleiro nxn
+// preenchido aleatoriamente com valores de 0 a (n^2)-1.
+func NewRandom(n int) State {
+	state := State{}
+	state.gameBoard = make([][]int, n)
+	for i := 0; i < n; i++ {
+		state.gameBoard[i] = make([]int, n)
+	}
+	state.shuffle(time.Now().UnixNano())
+	state.pos0 = state.findPos(0)
 	return state
 }
 
@@ -80,13 +92,5 @@ func (s *State) shuffle(seed int64) {
 }
 
 func (s State) makeCopy() State {
-	copy := State{[][]int{}, s.pos0}
-	for _, arr := range s.gameBoard {
-		line := []int{}
-		for _, val := range arr {
-			line = append(line, val)
-		}
-		copy.gameBoard = append(copy.gameBoard, line)
-	}
-	return copy
+	return New(s.gameBoard)
 }

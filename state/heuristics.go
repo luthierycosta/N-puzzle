@@ -16,7 +16,7 @@ func (a State) findPos(k int) Pair {
     for i := range a.gameBoard {
         for j := range a.gameBoard[i] {
             if a.gameBoard[i][j] == k {
-                return Pair{i, j}
+                return Pair{j, i}
             }
         }
     }
