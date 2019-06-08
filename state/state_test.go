@@ -16,14 +16,14 @@ func TestNewState(t *testing.T) {
 		{9,10,11,12},
 		{13,14,15,0},
 	})
-	size := len(state.gameBoard)
+	size := len(state.Board)
 
 	for i := 0; i < size; i++ {
 		for j := 0; j < size; j++ {
 			if (i == size-1 && j == size-1) {
-				assert.Equal(state.gameBoard[i][j], 0)
+				assert.Equal(state.Board[i][j], 0)
 			} else {
-				assert.Equal(state.gameBoard[i][j], i * size + j + 1)
+				assert.Equal(state.Board[i][j], i * size + j + 1)
 			}
 		}
 	}
@@ -40,7 +40,7 @@ func TestPos0(t *testing.T) {
 	})
 	assert.Equal(final.findPos(0), Pair{2,2})
 
-	final.gameBoard[2][2] = 10
+	final.Board[2][2] = 10
 	assert.Equal(final.findPos(0), Pair{-1,-1})
 }
 
@@ -50,7 +50,7 @@ func TestPos0Shuffle(t *testing.T) {
 	for i := 3; i < 6; i++ {
 		state := NewRandom(3)
 		x,y := state.pos0.X, state.pos0.Y
-		assert.Equal(state.gameBoard[y][x], 0)
+		assert.Equal(state.Board[y][x], 0)
 	}
 	state := NewRandom(6)
 	for i := 0; i < 36; i++ {
@@ -82,7 +82,7 @@ func TestMakeCopy(t *testing.T) {
 		//assert.Equal(state, copy)
 		fmt.Println("state:",state)
 		fmt.Println("copy:",copy)
-		state.gameBoard[0][0] = 10
+		state.Board[0][0] = 10
 		//assert.NotEqual(state, copy)
 		fmt.Println("new state:",state)
 		fmt.Println("new copy:",copy)

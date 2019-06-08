@@ -6,9 +6,9 @@ import "time"
 type Pair struct {X, Y int}
 
 // State representa um determinado estado no tabuleiro,
-// com os valores das peças na matriz gameBoard e a posição atual do 0 (espaço vazio) armazenada.
+// com os valores das peças na matriz Board e a posição atual do 0 (espaço vazio) armazenada.
 type State struct {
-	gameBoard [][]int
+	Board     [][]int
 	pos0      Pair
 }
 
@@ -16,11 +16,11 @@ type State struct {
 func New(board [][]int) State {
 	state := State{}
 	n := len(board)
-	state.gameBoard = make([][]int, n)
+	state.Board = make([][]int, n)
 	for i := 0; i < n; i++ {
-		state.gameBoard[i] = make([]int, n)
+		state.Board[i] = make([]int, n)
 		for j := 0; j < n; j++ {
-			state.gameBoard[i][j] = board[i][j]
+			state.Board[i][j] = board[i][j]
 		}
 	}
 	state.pos0 = state.findPos(0)
@@ -31,24 +31,25 @@ func New(board [][]int) State {
 // preenchido aleatoriamente com valores de 0 a (n^2)-1.
 func NewRandom(n int) State {
 	state := State{}
-	state.gameBoard = make([][]int, n)
+	state.Board = make([][]int, n)
 	for i := 0; i < n; i++ {
-		state.gameBoard[i] = make([]int, n)
+		state.Board[i] = make([]int, n)
 	}
 	state.shuffle(time.Now().UnixNano())
 	state.pos0 = state.findPos(0)
 	return state
 }
 
+// makeCopy retorna uma cópia do estado s.
 func (s State) makeCopy() State {
-	return New(s.gameBoard)
+	return New(s.Board)
 }
 
 // Encontra a posição (x,y) do bloco k no tabuleiro do estado a.
-func (a State) findPos(k int) Pair {
-    for i := range a.gameBoard {
-        for j := range a.gameBoard[i] {
-            if a.gameBoard[i][j] == k {
+func (s State) findPos(k int) Pair {
+    for i := range s.Board {
+        for j := range s.Board[i] {
+            if s.Board[i][j] == k {
                 return Pair{j, i}
             }
         }

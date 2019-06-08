@@ -4,7 +4,7 @@ import "math/rand"
 
 func (s *State) shuffle(seed int64) {
 	r := rand.New(rand.NewSource(seed)) // create new random source
-	bSize := len(s.gameBoard)           // get board size
+	bSize := len(s.Board)           // get board size
 	perm := r.Perm(bSize * bSize)       // get random permutarion of size n^2
 
 	row0 := -1
@@ -30,7 +30,7 @@ func (s *State) shuffle(seed int64) {
 	for i, randIndex := range perm {
 		row := i / bSize
 		col := i % bSize
-		s.gameBoard[row][col] = randIndex
+		s.Board[row][col] = randIndex
 	}
 }
 

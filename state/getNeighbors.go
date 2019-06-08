@@ -23,11 +23,11 @@ func (s State) getNeighbors(dir path.Direction) []State {
 	// if 0 is at the left border of the board, cant move left
 	if (s.pos0.X == 0) { left = false }
 	// if 0 is at the right border of the board, cant move right
-	if (s.pos0.X == len(s.gameBoard)-1) { right = false }
+	if (s.pos0.X == len(s.Board)-1) { right = false }
 	// if 0 is at the upper border of the board, cant move up
 	if (s.pos0.Y == 0) { up = false }
 	// if 0 is at the lower border of the board, cant move down
-	if (s.pos0.Y == len(s.gameBoard)-1) { down = false }
+	if (s.pos0.Y == len(s.Board)-1) { down = false }
 
 	// now make the neighbors
 	if (up) {
@@ -57,16 +57,16 @@ func (s State) getNeighbors(dir path.Direction) []State {
 func (s *State) move(dir path.Direction) {
 	x0, y0 := s.pos0.X, s.pos0.Y
 	if (dir == path.Up) {
-		s.gameBoard[y0][x0], s.gameBoard[y0-1][x0] = s.gameBoard[y0-1][x0], s.gameBoard[y0][x0]
+		s.Board[y0][x0], s.Board[y0-1][x0] = s.Board[y0-1][x0], s.Board[y0][x0]
 		s.pos0.Y = y0-1
 	}	else if (dir == path.Down) {
-		s.gameBoard[y0][x0], s.gameBoard[y0+1][x0] = s.gameBoard[y0+1][x0], s.gameBoard[y0][x0]
+		s.Board[y0][x0], s.Board[y0+1][x0] = s.Board[y0+1][x0], s.Board[y0][x0]
 		s.pos0.Y = y0+1
 	}	else if (dir == path.Left) {
-		s.gameBoard[y0][x0], s.gameBoard[y0][x0-1] = s.gameBoard[y0][x0-1], s.gameBoard[y0][x0]
+		s.Board[y0][x0], s.Board[y0][x0-1] = s.Board[y0][x0-1], s.Board[y0][x0]
 		s.pos0.X = x0-1
 	}	else if (dir == path.Right) {
-		s.gameBoard[y0][x0], s.gameBoard[y0][x0+1] = s.gameBoard[y0][x0+1], s.gameBoard[y0][x0]
+		s.Board[y0][x0], s.Board[y0][x0+1] = s.Board[y0][x0+1], s.Board[y0][x0]
 		s.pos0.X = x0+1
 	}
 }
