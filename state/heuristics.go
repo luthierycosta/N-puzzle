@@ -1,7 +1,11 @@
 package state
 
-// DistanceTo calcula a função heurística de um estado a, que será usada na busca até um estado b.
-// Pega a soma da distâncias das posições dos blocos entre um estado e outro.
+// Heuristic calcula a função heurística de um estado a, que será usada na busca até um estado alvo.
+func (a State) Heuristic(target State) int {
+	return len(a.Path) + a.DistanceTo(target)
+}
+
+// DistanceTo a -> b é o somatório das diferenças das posições dos blocos entre a e b.
 func (a State) DistanceTo(b State) (res int) {
 	n := len(a.Board)
 	// para cada bloco i no tabuleiro, obtenha sua posição nos dois estados e calcule a diferença entre eles

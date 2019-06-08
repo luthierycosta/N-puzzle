@@ -3,7 +3,6 @@ package state
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"fmt"
 	"github.com/luthierycosta/N-puzzle/path"
 )
 
@@ -74,29 +73,26 @@ func TestIsSolvable(t *testing.T) {
 }
 
 func TestMakeCopy(t *testing.T) {
-	//assert := assert.New(t)
+	assert := assert.New(t)
 
 	for i := 3; i < 10; i++ {
 		state := NewRandom(i)
 		copy := state.makeCopy()
-		//assert.Equal(state, copy)
-		fmt.Println("state:",state)
-		fmt.Println("copy:",copy)
-		state.Board[0][0] = 10
-		//assert.NotEqual(state, copy)
-		fmt.Println("new state:",state)
-		fmt.Println("new copy:",copy)
+		assert.Equal(state, copy)
+		
+		state.Board[0][0] = 100
+		assert.NotEqual(state, copy)
 	}
 }
 
 func TestGetNeighbors(t *testing.T) {
 	assert := assert.New(t)
 
-	// getNeighbors nao deve alterar o campo original
+	// GetNeighbors nao deve alterar o campo original
 	stateA := NewRandom(3)
 	stateACopy := stateA.makeCopy()
 	assert.Equal(stateA, stateACopy)
-	stateA.getNeighbors(path.Down)
+	stateA.GetNeighbors(path.Down)
 	assert.Equal(stateA, stateACopy)
 
 	// quando o 0 esta no canto, so deve ter uma jogada possivel
@@ -104,7 +100,7 @@ func TestGetNeighbors(t *testing.T) {
 		{1, 2, 3},
 		{4, 5, 6},
 		{7, 8, 0} })
-	infDirNeigh := cantoInfDir.getNeighbors(path.Down)
+	infDirNeigh := cantoInfDir.GetNeighbors(path.Down)
 	assert.Equal(len(infDirNeigh), 1)
 	assert.Equal(New([][]int{
 		{1, 2, 3},
@@ -115,7 +111,7 @@ func TestGetNeighbors(t *testing.T) {
 		{0, 2, 3},
 		{4, 5, 6},
 		{7, 8, 1} })
-	supEsqNeigh := cantoSupEsq.getNeighbors(path.Left)
+	supEsqNeigh := cantoSupEsq.GetNeighbors(path.Left)
 	assert.Equal(len(supEsqNeigh), 1)
 	assert.Equal(New([][]int{
 		{4, 2, 3},
@@ -125,8 +121,8 @@ func TestGetNeighbors(t *testing.T) {
 	// se o 0 esta na borda, so devem ter 2 jogadas possiveis
 	bordaSup := New([][]int{
 		{1, 0, 3}, {4, 5, 6}, {7, 8, 2}})
-	bordaSupNei1 := bordaSup.getNeighbors(path.Right)
-	bordaSupNei2 := bordaSup.getNeighbors(path.Up)
+	bordaSupNei1 := bordaSup.GetNeighbors(path.Right)
+	bordaSupNei2 := bordaSup.GetNeighbors(path.Up)
 	
 	assert.Equal(2, len(bordaSupNei1))
 	assert.Equal(2, len(bordaSupNei2))
@@ -145,7 +141,7 @@ func TestGetNeighbors(t *testing.T) {
 		{1, 2, 3},
 		{4, 0, 6},
 		{7, 8, 5} })
-	meioNeigh := meio.getNeighbors(path.Right)
+	meioNeigh := meio.GetNeighbors(path.Right)
 
 	assert.Equal([]State{
 		New([][]int{{1, 0, 3}, {4, 2, 6}, {7, 8, 5}}),

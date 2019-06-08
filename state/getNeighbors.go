@@ -5,7 +5,9 @@ import (
 	"github.com/luthierycosta/N-puzzle/path"
 )
 
-func (s State) getNeighbors(dir path.Direction) []State {
+// GetNeighbors gets the neighbors of a state s,
+// that is, which new states can this one generate by making a move in the board.
+func (s State) GetNeighbors(dir path.Direction) []State {
 
 	// start off without any neighbors
 	neighbors := []State{}
@@ -69,4 +71,5 @@ func (s *State) move(dir path.Direction) {
 		s.Board[y0][x0], s.Board[y0][x0+1] = s.Board[y0][x0+1], s.Board[y0][x0]
 		s.pos0.X = x0+1
 	}
+	s.Path = append(s.Path, dir)
 }

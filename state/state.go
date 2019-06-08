@@ -1,6 +1,9 @@
 package state
 
-import "time"
+import (
+	"time"
+	"github.com/luthierycosta/N-puzzle/path"
+)
 
 // Pair representa uma casa (x,y) no tabuleiro do jogo.
 type Pair struct {X, Y int}
@@ -10,6 +13,7 @@ type Pair struct {X, Y int}
 type State struct {
 	Board     [][]int
 	pos0      Pair
+	Path      path.Path
 }
 
 // New State aloca e retorna um novo estado, cujo tabuleiro é recebido de argumento.
@@ -55,4 +59,22 @@ func (s State) findPos(k int) Pair {
         }
     }
     return Pair{-1,-1}      // alguma exceção que eu não sei implementar
+}
+
+// Equal checa se dois estados têm o mesmo tabuleiro.
+func Equal(a, b State) bool {
+	if len(a.Board) != len(b.Board) {
+		return false
+	}
+	for i := range a.Board {
+		if len(a.Board[i]) != len(b.Board[i]) {
+			return false
+		}
+		for j := range a.Board[i] {
+			if a.Board[i][j] != b.Board[i][j] {
+				return false
+			}
+		}
+	}
+	return true
 }

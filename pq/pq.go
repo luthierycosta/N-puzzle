@@ -1,5 +1,7 @@
 package pq
 
+import	. "github.com/luthierycosta/N-puzzle/state"
+
 type EmptyStackError struct {
 	msg string
 }
@@ -7,19 +9,15 @@ type EmptyStackError struct {
 func (e *EmptyStackError) Error() string {
     return e.msg
 }
-// Struct Item, que depois será substituída pela struct State
-type Item struct {
-	value float64
-}
 
 // Fila de prioridade, implementada em uma heap armazenada em array.
-type PriorityQueue []Item
+type PriorityQueue []State
 
 // Função de comparação entre 2 itens usada para ordenar a fila de prioridade, ainda não definida.
-var compare func(Item,Item)bool
+var compare func(State,State)bool
 
 // Aloca e retorna uma nova fila de prioridade, cuja função compare() é recebida de parâmetro.
-func New(customCompare func(Item,Item)bool) PriorityQueue {
+func New(customCompare func(State,State)bool) PriorityQueue {
 	pq := new(PriorityQueue)
 	compare = customCompare
 	return *pq
@@ -30,7 +28,7 @@ func (pq *PriorityQueue) Len() int {
 }
 
 // Insere uma quantidade qualquer de itens na fila.
-func (pq *PriorityQueue) Push(items ...Item) {
+func (pq *PriorityQueue) Push(items ...State) {
     for _, obj := range items {
 		*pq = append((*pq), obj)
 
@@ -43,7 +41,7 @@ func (pq *PriorityQueue) Push(items ...Item) {
 }
 
 // Retorna o valor de maior prioridade na fila.
-func (pq *PriorityQueue) Top() (result Item, errorHandle error) {
+func (pq *PriorityQueue) Top() (result State, errorHandle error) {
 	errorHandle = nil
 	if pq.Len() == 0 {
 		errorHandle = &EmptyStackError{"Pilha vazia"}
