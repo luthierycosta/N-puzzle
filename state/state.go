@@ -46,7 +46,12 @@ func NewRandom(n int) State {
 
 // makeCopy retorna uma cópia do estado s.
 func (s State) makeCopy() State {
-	return New(s.Board)
+	copy := New(s.Board)
+	copy.Path = make([]path.Direction, len(s.Path))
+	for i := range copy.Path {
+		copy.Path[i] = s.Path[i]
+	}
+	return copy
 }
 
 // Encontra a posição (x,y) do bloco k no tabuleiro do estado a.

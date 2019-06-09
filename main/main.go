@@ -22,7 +22,7 @@ func main() {
 	})
 
 	go search(begin, end, ch)
-	go search(end, begin, ch)
+	//go search(end, begin, ch)
 
 	result := <-ch
 	fmt.Println(result)
@@ -38,6 +38,7 @@ func search(initial, target state.State, ch chan path.Path) {
 	pq.Push(initial)
 
 	for pq.Len() != 0 {
+		fmt.Println("FILA:",pq)
 		current, _ := pq.Top()
 		pq.Pop()
 
@@ -46,7 +47,13 @@ func search(initial, target state.State, ch chan path.Path) {
 		} else if pathFound, existsKey := visited[fmt.Sprint(current.Board)]; existsKey {
 			ch <- current.Path.Join(pathFound)
 		} else {
-			pq.Push(current.GetNeighbors()...)
+			var lastMove path.Direction
+			if pq.Len() == 0 {
+				lastMove = path.None
+			} else {
+				lastMove = current.Path[len(current.Path)-1]
+			}
+			pq.Push(current.GetNeighbors(lastMove)...)
 			visited[fmt.Sprint(current.Board)] = current.Path
 		}
 	}

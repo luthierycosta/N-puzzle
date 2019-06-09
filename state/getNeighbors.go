@@ -7,6 +7,8 @@ import (
 
 // GetNeighbors gets the neighbors of a state s,
 // that is, which new states can this one generate by making a move in the board.
+// Dir represents the last movement made in the board until current s' state
+// and its purpose is to prevent generating looping neighbors.
 func (s State) GetNeighbors(dir path.Direction) []State {
 
 	// start off without any neighbors

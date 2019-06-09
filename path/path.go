@@ -16,6 +16,7 @@ const (
 	Right Direction = 1
 	Down Direction = 2
 	Left Direction = 3
+	None Direction = 4
 )
 
 // Path representacao de um caminho
