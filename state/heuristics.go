@@ -1,8 +1,8 @@
 package state
 
 // Heuristic calcula a função heurística de um estado a, que será usada na busca até um estado alvo.
-func (a State) Heuristic(target State) int {
-	return len(a.Path) + a.DistanceTo(target)
+func (a State) Heuristic(initial, target State) int {
+	return a.DistanceTo(initial) + a.DistanceTo(target)
 }
 
 // DistanceTo a -> b é o somatório das diferenças das posições dos blocos entre a e b.
