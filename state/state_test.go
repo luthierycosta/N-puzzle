@@ -3,6 +3,7 @@ package state
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"math/rand"
 	"github.com/luthierycosta/N-puzzle/path"
 )
 
@@ -57,6 +58,33 @@ func TestShuffle(t *testing.T) {
 
 	state.shuffle(10)
 	assert.Equal([][]int{{1, 2, 8}, {4, 6, 3}, {5, 7, 0}}, state.gameBoard)
+}
+
+func TestShuffleIsValid(t *testing.T) {
+	assert := assert.New(t)
+
+	// create new random source
+	var seed int64 = 23456
+	r := rand.New(rand.NewSource(seed))
+
+	state3 := NewState(3)
+	state4 := NewState(4)
+	state5 := NewState(5)
+	state6 := NewState(6)
+
+	for i := 0; i < 100; i++ {
+		state3.shuffle(r.Int63())
+		state4.shuffle(r.Int63())
+		state5.shuffle(r.Int63())
+		state6.shuffle(r.Int63())
+
+		assert.True(state3.isSolvable())
+		assert.True(state4.isSolvable())
+		assert.True(state5.isSolvable())
+		assert.True(state6.isSolvable())
+
+		r.Seed(r.Int63())
+	}
 }
 
 func TestMakeCopy(t *testing.T) {
