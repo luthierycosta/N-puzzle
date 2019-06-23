@@ -9,7 +9,7 @@ import (
 // that is, which new states can this one generate by making a move in the board.
 // Dir represents the last movement made in the board until current s' state
 // and its purpose is to prevent generating looping neighbors.
-func (s State) GetNeighbors(dir path.Direction) []State {
+func (s State) GetNeighbors() []State {
 
 	// start off without any neighbors
 	neighbors := []State{}
@@ -18,12 +18,6 @@ func (s State) GetNeighbors(dir path.Direction) []State {
 	up, down 		:= true, true
 	left, right := true, true
 	
-	// cant move back
-	if (dir == path.Up) { down = false } else
-	if (dir == path.Down) { up = false } else
-	if (dir == path.Left) { right = false } else
-	if (dir == path.Right) { left = false }
-
 	// if 0 is at the left border of the board, cant move left
 	if (s.pos0.X == 0) { left = false }
 	// if 0 is at the right border of the board, cant move right

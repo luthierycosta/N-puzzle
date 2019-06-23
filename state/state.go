@@ -1,6 +1,7 @@
 package state
 
 import (
+	"fmt"
 	"time"
 	"github.com/luthierycosta/N-puzzle/path"
 )
@@ -52,6 +53,11 @@ func (s State) makeCopy() State {
 		copy.Path[i] = s.Path[i]
 	}
 	return copy
+}
+
+// ToString retorna a forma em string do tabuleiro em s.
+func (s State) ToString() string {
+	return fmt.Sprint(s.Board)
 }
 
 // Encontra a posição (x,y) do bloco k no tabuleiro do estado a.
