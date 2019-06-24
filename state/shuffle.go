@@ -10,7 +10,7 @@ func (s *State) shuffle(seed int64) {
 	row0 := -1
 	for i, val := range perm {
 		if val == 0 {
-			row0 = i
+			row0 = bSize - (i/bSize)
 		}
 	}
 
@@ -21,7 +21,7 @@ func (s *State) shuffle(seed int64) {
 		perm = r.Perm(bSize * bSize)
 		for i, val := range perm {
 			if val == 0 {
-				row0 = i
+				row0 = bSize - (i/bSize)
 			}
 		}
 	}
@@ -45,7 +45,7 @@ func isSolvable(perm []int, bSize int, row0 int) bool {
 		}
 	}
 
-	return (bSize%2 == 1 && inversion%2 == 0) || (row0%2+inversion%2 == 1)
+	return (bSize%2 == 1 && inversion%2 == 0) || bSize%2 == 0 && (row0%2+inversion%2 == 1)
 
 	// logic taken from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
 }

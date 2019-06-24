@@ -15,7 +15,8 @@ func (a State) DistanceTo(b State) (res int) {
 	return
 }
 
-// Calcula quantos passos distante a casa (xa,ya) está de (xb, yb).
+// Calcula quantos passos distante a casa a=(xa,ya) está de b=(xb, yb)
+// em outras palavras, a distância de Manhattan entre os dois pontos.
 func difference(a, b Pair) int {
 	return abs(a.X-b.X) + abs(a.Y-b.Y)
 }

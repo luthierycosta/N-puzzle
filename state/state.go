@@ -74,18 +74,5 @@ func (s State) findPos(k int) Pair {
 
 // Equal checa se dois estados têm o mesmo tabuleiro.
 func Equal(a, b State) bool {
-	if len(a.Board) != len(b.Board) {
-		return false
-	}
-	for i := range a.Board {
-		if len(a.Board[i]) != len(b.Board[i]) {
-			return false
-		}
-		for j := range a.Board[i] {
-			if a.Board[i][j] != b.Board[i][j] {
-				return false
-			}
-		}
-	}
-	return true
+	return a.ToString() == b.ToString()
 }

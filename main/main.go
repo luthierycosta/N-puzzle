@@ -22,7 +22,7 @@ func main() {
 		{1, 2, 3},
 		{4, 5, 6},
 		{7, 8, 0},
-	})	
+	})
 	// faz as buscas. 
 	go search(begin, end, ch, 0)
 	//go search(end, begin, ch, 1)
@@ -40,7 +40,7 @@ func search(initial, target state.State, ch chan path.Path, i int) {
 		ag, ah := a.Heuristic(target)
 		bg, bh := b.Heuristic(target)
 		af, bf := ag+ah, bg+bh
-		return	ah < bh || af == bf && ah < bh
+		return	af < bf || af == bf && ah < bh
 	}
 	pq := pq.New(compareFunction)
 	pq.Push(initial)
