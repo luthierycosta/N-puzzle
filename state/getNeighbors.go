@@ -30,29 +30,29 @@ func (s State) GetNeighbors() []State {
 	// now make the neighbors
 	if (up) {
 		upMovement := s.makeCopy()										// make copy of current state
-		upMovement.move(path.Up)											// move up
+		upMovement.Move(path.Up)											// Move up
 		neighbors = append(neighbors, upMovement)			// add to neighbors array
 	}
 	if (down) {
 		downMovement := s.makeCopy()									// make copy of current state
-		downMovement.move(path.Down)									// move down
+		downMovement.Move(path.Down)									// Move down
 		neighbors = append(neighbors, downMovement)		// add to neighbors array
 	}
 	if (left) {
 		leftMovement := s.makeCopy()									// make copy of current state
-		leftMovement.move(path.Left)									// move left
+		leftMovement.Move(path.Left)									// Move left
 		neighbors = append(neighbors, leftMovement)		// add to neighbors array
 	}
 	if (right) {
 		rightMovement := s.makeCopy()									// make copy of current state
-		rightMovement.move(path.Right)								// move right
+		rightMovement.Move(path.Right)								// Move right
 		neighbors = append(neighbors, rightMovement)	// add to neighbors array
 	}
 
 	return neighbors
 }
 
-func (s *State) move(dir path.Direction) {
+func (s *State) Move(dir path.Direction) {
 	x0, y0 := s.pos0.X, s.pos0.Y
 	if (dir == path.Up) {
 		s.Board[y0][x0], s.Board[y0-1][x0] = s.Board[y0-1][x0], s.Board[y0][x0]

@@ -2,7 +2,6 @@ package state
 
 import (
 	"fmt"
-	"time"
 	"github.com/luthierycosta/N-puzzle/path"
 )
 
@@ -40,7 +39,7 @@ func NewRandom(n int) State {
 	for i := 0; i < n; i++ {
 		state.Board[i] = make([]int, n)
 	}
-	state.shuffle(time.Now().UnixNano())
+	state.shuffle(88)
 	state.pos0 = state.findPos(0)
 	return state
 }
@@ -67,6 +66,16 @@ func (s State) ToString() (res string) {
 	}
 	res += " ]"
 	return
+}
+
+func (s State) Print() {
+	for i := range s.Board {
+		fmt.Printf("[ ")
+		for j := range s.Board[i] {
+			fmt.Printf("%02d ", s.Board[i][j])
+		}
+		fmt.Printf("]\n")
+	}
 }
 
 // Encontra a posição (x,y) do bloco k no tabuleiro do estado a.

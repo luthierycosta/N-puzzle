@@ -17,10 +17,10 @@ func getPermutation(s State) []int {
 
 func TestNewRandom(t *testing.T) {
 	
-	s := NewRandom(3)
+	s := NewRandom(4)
 	perm := getPermutation(s)
 	t.Log(perm)
-	t.Log(isSolvable(perm, len(s.Board), s.findPos(0).X))	
+	t.Log(isSolvable(perm, len(s.Board), s.findPos(0).Y), len(s.Board), s.findPos(0))	
 }
 
 func TestPos0Shuffle(t *testing.T) {
