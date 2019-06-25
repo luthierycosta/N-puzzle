@@ -56,8 +56,17 @@ func (s State) makeCopy() State {
 }
 
 // ToString retorna a forma em string do tabuleiro em s.
-func (s State) ToString() string {
-	return fmt.Sprint(s.Board)
+func (s State) ToString() (res string) {
+	res += "["
+	for i := range s.Board {
+		res += " ["
+		for j := range s.Board[i] {
+			res += fmt.Sprintf("%02d ", s.Board[i][j])
+		}
+		res += "]"
+	}
+	res += " ]"
+	return
 }
 
 // Encontra a posição (x,y) do bloco k no tabuleiro do estado a.

@@ -45,7 +45,7 @@ func isSolvable(perm []int, bSize int, row0 int) bool {
 		}
 	}
 
-	return (bSize%2 == 1 && inversion%2 == 0) || bSize%2 == 0 && (row0%2+inversion%2 == 1)
+	return bSize%2 == 1 && inversion%2 == 0 || bSize%2 == 0 && row0%2+inversion%2 == 1
 
 	// logic taken from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
 }

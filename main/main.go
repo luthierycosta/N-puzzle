@@ -47,7 +47,7 @@ func search(initial, target state.State, ch chan path.Path, i int) {
 
 	for pq.Len() != 0 {
 		current, _ := pq.Top()
-		fmt.Printf("TOPO: %v, G: %v, H2: %v\n", current.Board, len(current.Path), current.DistanceTo(target))
+		fmt.Printf("TOPO: %v, G: %v, H2: %v\n", current.ToString(), len(current.Path), current.DistanceTo(target))
 		pq.Pop()
 
 		// Se o estado atual é o final, solução encontrada. Retorne o caminho associado ao atual.
