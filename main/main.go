@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"time"
-	"net"
-	"encoding/json"
 	"github.com/luthierycosta/N-puzzle/state"
 	"github.com/luthierycosta/N-puzzle/path"
 )
@@ -32,23 +30,7 @@ func main() {
 	go search(end, begin, ch, 1)
 	
 	result := <-ch
-	fmt.Println(result)
-	
-	defer fmt.Printf("Tempo decorrido: %s\n", time.Since(timer))
-	jsonHandle(begin, result)
+	defer fmt.Printf("Tempo decorrido na busca: %s\n", time.Since(timer))
+	print(begin, result)
 }
 
-func jsonHandle(begin state.State, result path.Path) {
-	obj := struct {
-		Begin string `json:"begin"`
-		Result string `json:"result"`
-	}{
-		Begin: begin.ToString(),
-		Result: fmt.Sprint(result),
-	}
-	toNode, _ := json.Marshal(obj)
-	conn, err := net.Dial("udp", ":8080")
-	if err != nil {
-		conn.Write([]byte(toNode))
-	}
-}

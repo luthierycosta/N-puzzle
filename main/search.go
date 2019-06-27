@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 	"github.com/luthierycosta/N-puzzle/state"
 	"github.com/luthierycosta/N-puzzle/path"
@@ -26,13 +25,12 @@ func search(initial, target state.State, ch chan path.Path, i int) {
 
 	for pq.Len() != 0 {
 		current, _ := pq.Top()
-		fmt.Printf("TOPO: %v, G: %v, H: %v, F: %v\n", current.ToString(), len(current.Path), current.DistanceTo(target), len(current.Path)+current.DistanceTo(target))
 		pq.Pop()
 		
 		// Pega o lock, marca como visitado no próprio vetor e vê se ele já foi visitado pela outra.
 		mutex.Lock()
-		pathFound, visitedbyOther	:= visited[1-i][current.ToString()]
-		visited[i][current.ToString()] = current.Path
+		pathFound, visitedbyOther		:= visited[1-i][current.ToString()]
+		visited[i][current.ToString()]	= current.Path
 		mutex.Unlock()
 
 		// Se o estado atual é o final, solução encontrada. Retorne o caminho associado ao atual.
